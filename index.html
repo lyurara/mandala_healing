@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Mindful Mandala Coloring</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdn.jsdelivr.net/npm/lucide@latest/dist/umd/lucide.min.js"></script>
+</head>
+<body class="bg-gray-50 font-sans text-gray-900 overflow-hidden">
+  <div id="app" class="h-screen w-screen flex flex-col relative">
+    <!-- Breathing Modal -->
+    <div id="breathing-modal" class="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-80 backdrop-blur-md">
+      <div class="bg-white rounded-xl p-8 w-full max-w-md shadow-lg">
+        <h2 class="text-2xl font-medium text-center mb-6">Begin with Deep Breathing</h2>
+        <p class="text-center text-gray-600 mb-6">Take a moment to center yourself with 3 deep breaths</p>
+        
+        <div class="relative flex justify-center items-center h-60 mb-8">
+          <div id="breathing-circle" class="absolute rounded-full bg-gradient-to-r from-blue-300 to-indigo-300 transform transition-all duration-1000 flex items-center justify-center">
+            <span id="breathing-text" class="text-white font-medium text-xl">Inhale</span>
+          </div>
+        </div>
+        
+        <div class="text-center text-gray-600 mb-6">
+          <span id="breath-count">0</span>/3 breaths completed
+        </div>
+        
+        <div class="flex justify-center gap-4">
+          <button id="skip-breathing" class="px-5 py-2 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors font-medium">
+            Skip
+          </button>
+          <button id="start-breathing" class="px-5 py-2 bg-black text-white rounded-lg hover:bg-gray-800 transition-colors font-medium">
+            Begin
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <header class="border-b border-gray-100 py-4 px-6 flex justify-between items-center">
+      <h1 class="text-2xl font-medium">Mindful Mandala Coloring</h1>
+      <div class="flex items-center gap-4">
+        <div class="flex items-center gap-2">
+          <span class="text-sm font-medium">Complexity:</span>
+          <div class="flex border border-gray-200 rounded-lg overflow-hidden">
+            <button id="complexity-simple" class="px-3 py-1.5 text-xs font-medium complexity-btn active">Simple</button>
+            <button id="complexity-medium" class="px-3 py-1.5 text-xs font-medium complexity-btn">Medium</button>
+            <button id="complexity-complex" class="px-3 py-1.5 text-xs font-medium complexity-btn">Complex</button>
+          </div>
+        </div>
+        <button id="new-mandala-btn" class="px-4 py-2 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors text-sm font-medium">
+          New Mandala
+        </button>
+        <button id="toggle-music-btn" class="p-2 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors" aria-label="Toggle Music">
+          <i data-lucide="volume-2" class="w-5 h-5"></i>
+        </button>
+      </div>
+    </header>
+
+    <main class="flex-1 flex overflow-hidden">
+      <!-- Color Palette Sidebar -->
+      <aside class="w-[160px] border-r border-gray-100 flex flex-col p-2 bg-white">
+        <div id="color-palette-container" class="relative flex-1 mb-4">
+          <div id="color-palette" class="grid">
+            <!-- 颜色会动态注入这里 -->
+          </div>
+          <div class="scroll-indicator-container">
+            <div class="scroll-indicator"></div>
+          </div>
+        </div>
+        
+        <div class="border-t border-gray-100 pt-3">
+          <h3 class="text-xs text-gray-500 mb-2 text-center">笔触大小</h3>
+          <div class="flex flex-col gap-2 items-center">
+            <button class="brush-size-btn w-6 h-6 rounded-full border-2 border-transparent" data-size="small">
+              <div class="w-2 h-2 bg-gray-800 rounded-full mx-auto"></div>
+            </button>
+            <button class="brush-size-btn w-8 h-8 rounded-full border-2 border-transparent active" data-size="medium">
+              <div class="w-4 h-4 bg-gray-800 rounded-full mx-auto"></div>
+            </button>
+            <button class="brush-size-btn w-10 h-10 rounded-full border-2 border-transparent" data-size="large">
+              <div class="w-6 h-6 bg-gray-800 rounded-full mx-auto"></div>
+            </button>
+          </div>
+        </div>
+      </aside>
+
+      <!-- Canvas Area -->
+      <div class="flex-1 flex items-center justify-center p-4 bg-gray-50 overflow-auto">
+        <div id="canvas-container" class="relative mx-auto rounded-lg overflow-hidden shadow-sm bg-white">
+          <svg id="mandala-svg" class="w-full h-full"></svg>
+        </div>
+      </div>
+    </main>
+
+    <footer class="border-t border-gray-100 py-3 px-6 text-center text-sm text-gray-500">
+      <!-- 删除 "Built with Mindful Mandala" 文本 -->
+    </footer>
+  </div>
+
+  <audio id="background-music" loop>
+    <source src="https://assets.mixkit.co/music/preview/mixkit-serene-view-443.mp3" type="audio/mpeg">
+  </audio>
+
+  <script>
+    window.addEventListener("wheel", (e) => {
+      const isPinching = e.ctrlKey
+      if(isPinching) e.preventDefault()
+    }, { passive: false })
+  </script>
+  <script src="simple-mandala.js"></script>
+  <script src="mandalas.js"></script>
+  <script src="colorpalette.js"></script>
+  <script src="breathing.js"></script>
+  <script src="mandala.js"></script>
+  <script src="audioController.js"></script>
+  <script src="main.js"></script>
+</body>
+</html>

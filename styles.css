@@ -1,0 +1,303 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body, html {
+    height: 100%;
+    width: 100%;
+    overscroll-behavior: none;
+  }
+  
+  .font-geist-mono {
+    font-family: 'SF Mono', SFMono-Regular, ui-monospace, monospace;
+  }
+  
+  #breathing-circle {
+    width: 100px;
+    height: 100px;
+    transform-origin: center;
+    box-shadow: 0 0 40px rgba(104, 109, 224, 0.2);
+    transition: all 4s ease-in-out;
+  }
+  
+  #breathing-circle.inhale {
+    animation: inhale 4s forwards;
+  }
+  
+  #breathing-circle.hold {
+    animation: hold 2s forwards;
+  }
+  
+  #breathing-circle.exhale {
+    animation: exhale 4s forwards;
+  }
+  
+  @keyframes inhale {
+    from {
+      width: 100px;
+      height: 100px;
+      opacity: 0.8;
+    }
+    to {
+      width: 200px;
+      height: 200px;
+      opacity: 1;
+    }
+  }
+  
+  @keyframes hold {
+    from, to {
+      width: 200px;
+      height: 200px;
+      opacity: 1;
+    }
+  }
+  
+  @keyframes exhale {
+    from {
+      width: 200px;
+      height: 200px;
+      opacity: 1;
+    }
+    to {
+      width: 100px;
+      height: 100px;
+      opacity: 0.8;
+    }
+  }
+  
+  /* Canvas & Mandala Styling */
+  #canvas-container {
+    max-width: 100%;
+    max-height: 100%;
+    aspect-ratio: 1/1;
+    transition: transform 0.3s ease;
+    padding: 20px;
+    width: 100%;
+    height: 100%;
+    background-color: white;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    border-radius: 8px;
+    margin: auto;
+  }
+  
+  #mandala-svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+    overflow: visible;
+  }
+  
+  /* Color Palette Styling */
+  .color-btn {
+    width: 100% !important;
+    height: 0 !important;
+    padding-bottom: 100% !important;
+    position: relative;
+    border-radius: 4px !important;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+    border: 1px solid rgba(0,0,0,0.05);
+    cursor: pointer;
+  }
+  
+  .color-btn:hover {
+    transform: scale(1.08);
+    z-index: 1;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+  }
+  
+  .color-btn.active {
+    transform: scale(1.12);
+    z-index: 3;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+  }
+  
+  .color-btn.active::after {
+    content: '';
+    position: absolute;
+    top: -3px;
+    right: -3px;
+    bottom: -3px;
+    left: -3px;
+    border: 2px solid #000;
+    border-radius: 8px;
+    opacity: 0.5;
+    pointer-events: none;
+  }
+  
+  .brush-size-btn {
+    transition: all 0.2s ease;
+  }
+  
+  .brush-size-btn:hover {
+    background-color: rgba(0,0,0,0.05);
+  }
+  
+  .brush-size-btn.active {
+    border-color: rgb(37, 99, 235);
+  }
+  
+  /* SVG Mandala Path Styling */
+  .mandala-section {
+    stroke: rgba(0, 0, 0, 0.8);
+    stroke-width: 1;
+    fill: white;
+    cursor: pointer;
+    transition: fill 0.2s ease;
+  }
+  
+  .mandala-section:hover {
+    stroke: rgba(0, 0, 0, 1);
+    stroke-width: 1.5;
+    filter: drop-shadow(0 0 2px rgba(0,0,0,0.3));
+  }
+  
+  /* Complexity Selector Styling */
+  .complexity-btn {
+    background-color: transparent;
+    transition: all 0.2s ease;
+  }
+  
+  .complexity-btn:hover {
+    background-color: rgba(0,0,0,0.03);
+  }
+  
+  .complexity-btn.active {
+    background-color: rgba(0,0,0,0.05);
+    font-weight: 600;
+  }
+  
+  /* Modal Transitions */
+  #breathing-modal {
+    transition: opacity 0.5s ease;
+  }
+  
+  #breathing-modal.opacity-0 {
+    opacity: 0;
+  }
+  
+  #breathing-modal.pointer-events-none {
+    pointer-events: none;
+  }
+  
+  /* 确保调色板容器样式正确 */
+  #color-palette {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 4px;
+    padding: 4px;
+    max-height: 80vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+    scrollbar-width: none;
+  }
+  
+  /* 隐藏默认滚动条 */
+  #color-palette::-webkit-scrollbar {
+    display: none;
+  }
+  
+  @media (max-width: 768px) {
+    header {
+      flex-direction: column;
+      gap: 12px;
+      align-items: flex-start;
+    }
+    
+    header > div {
+      width: 100%;
+      justify-content: space-between;
+    }
+    
+    .complexity-btn {
+      padding: 6px 10px;
+      font-size: 11px;
+    }
+  }
+  
+  /* 确保曼陀罗花图案在画布内 */
+  #mandala-group {
+    transform-origin: center;
+  }
+  
+  /* 添加调色盘滚动提示样式 */
+  .scroll-indicator-container {
+    position: absolute;
+    right: 0;
+    top: 20%;
+    height: 60%;
+    width: 4px;
+    background-color: rgba(0, 0, 0, 0.05);
+    border-radius: 2px;
+    pointer-events: none;
+    z-index: 10;
+  }
+  
+  .scroll-indicator {
+    position: absolute;
+    width: 4px;
+    background-color: rgba(0, 0, 0, 0.3);
+    border-radius: 2px;
+    transition: top 0.3s ease, height 0.3s ease;
+  }
+  
+  #color-palette-container {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+  }
+  
+  /* 修改调色盘容器宽度 - 扩展以适应5列布局 */
+  aside {
+    width: 160px !important;
+    transition: width 0.3s ease;
+  }
+  
+  /* 优化调色盘网格布局 */
+  #color-palette {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 4px;
+    padding: 4px;
+    max-height: 80vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+    scrollbar-width: none;
+  }
+  
+  /* 增强悬停效果 */
+  .color-btn:hover {
+    transform: scale(1.08);
+    z-index: 1;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+  }
+  
+  /* 增强选中效果 */
+  .color-btn.active {
+    transform: scale(1.12);
+    z-index: 3;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+  }
+  
+  /* 优化颜色组分隔线 */
+  .color-group-separator {
+    grid-column: 1 / -1;
+    height: 1px;
+    background: linear-gradient(to right, transparent, rgba(0,0,0,0.07), transparent);
+    margin: 3px 0;
+  }
+  
+  /* 为颜色组添加标题 */
+  .color-group-title {
+    grid-column: 1 / -1;
+    font-size: 9px;
+    color: #666;
+    text-align: center;
+    margin: 2px 0;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  
